@@ -1,30 +1,49 @@
-import React, {useEffect, useState} from "react";
-import {View, StyleSheet} from "react-native";
+import {View, StyleSheet, Text, FlatList} from "react-native";
 import {StatusBar} from "expo-status-bar";
+import {useEffect, useState} from "react";
+
+import axios from "axios";
 
 export default function DecklistScreen({route, navigation}){
-    const { i } = route.params;
-    const [decklist, setDecklist] = useState([]);
+    const { main }  = route.params;
+    const url = main.toString();
+    const [maindeck, setMaindeck] = useState([]);
 
-    useEffect(function (){
-        async function getData(){
-            const response = await fetch('https://raw.githubusercontent.com/PauloRFOliveira/PauloRFOliveira.github.io/main/decks.json');
-            const decklist = await response.json();
-            setDecklist(decklist)
+    async function fetchMaindeck(){
+        try{
+            const response = await axios(url);
+            console.log(response);
+            setMaindeck(response.data)
+        } catch (error){
+            console.log(error)
         }
-        getData();
+    }
+
+    useEffect(() => {
+        fetchMaindeck();
     }, [])
 
-    //function renderItem({item.id}){
-        //return(
+    function renderItem({item}){
+        return(
+            <View style={styles.card}>
 
-        //);
-    //}
+                <Text>{item.cardname}</Text>
+
+            </View>
+        );
+    }
 
     return(
         <View style={styles.container}>
 
             <StatusBar style="auto"/>
+
+            <FlatList
+                data={maindeck}
+                renderItem={renderItem}
+                keyExtractor={item => item.code}
+                showsVerticalScrollIndicator={false}
+            />
 
         </View>
     );
@@ -33,5 +52,9 @@ export default function DecklistScreen({route, navigation}){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    card: {
+        height: 60,
+        backgroundColor: "yellow",
     },
 });
