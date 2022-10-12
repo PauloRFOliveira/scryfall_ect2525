@@ -17,7 +17,7 @@ export default function HomeScreen({navigation}){
 
     function renderItem({ item }){
         return(
-            <TouchableOpacity style={styles.decks} onPress={() => navigation.navigate('DecklistScreen', {main : item.main})}>
+            <TouchableOpacity style={styles.decks} onPress={() => navigation.navigate('DecklistScreen', {link : item.url})}>
 
                 <Text>{item.name}</Text>
                 <Text>{item.format}</Text>
