@@ -1,4 +1,4 @@
-import {View, StyleSheet, Text, FlatList, Image, ScrollView} from "react-native";
+import {View, StyleSheet, Text, FlatList, Image, ScrollView, TouchableOpacity} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import {useEffect, useState} from "react";
 
@@ -25,7 +25,7 @@ export default function DecklistScreen({route, navigation}){
 
     function renderItem({item}){
         return(
-            <View style={styles.card}>
+            <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('CardScreen', {image : item.image})}>
 
                 <Image style={styles.cardImg} source={{uri: item.art}}/>
 
@@ -36,7 +36,7 @@ export default function DecklistScreen({route, navigation}){
 
                 </View>
 
-            </View>
+            </TouchableOpacity>
         );
     }
 
